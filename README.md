@@ -94,8 +94,7 @@ stalled, even if the threads themselves were recently written.
 
 **No automatic active list curation.** The active panel shows what each
 project's most recent entry declared as open. Automatic tracking of threads 
-requires heuristics and automated systems that defeat the purpose of journaling 
-the current context.
+requires heuristics and automated systems that defeat the purpose of journaling the current context.
 
 ## Future ideas
 

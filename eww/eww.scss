@@ -54,28 +54,14 @@ button {
   transition: background-color 150ms ease;
 }
 
-.row-button:hover {
-  background-color: rgba(255, 255, 255, 0.06);
-}
+.row-button:hover  { background-color: rgba(255, 255, 255, 0.06); }
+.row-button:active { background-color: rgba(255, 255, 255, 0.10); }
 
-.row-button:active {
-  background-color: rgba(255, 255, 255, 0.10);
-}
+.row { padding: 4px 0; }
 
-.row {
-  padding: 4px 0;
-}
+.name { color: #e8e8ec; font-weight: 500; }
 
-.name {
-  color: #e8e8ec;
-  font-weight: 500;
-}
-
-.ago {
-  color: #7a7a88;
-  font-size: 11px;
-  margin-left: 12px;
-}
+.ago { color: #7a7a88; font-size: 11px; margin-left: 12px; }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Status badges
@@ -96,36 +82,13 @@ button {
 .status-unknown { color: #888;    background-color: rgba(136, 136, 136, 0.12); }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Active panel
+// Active panel — column layout
 // ─────────────────────────────────────────────────────────────────────────────
 
-.scroll-area {
-  min-height: 0;
-}
-
-scrollbar {
-  background: transparent;
-  border: none;
-}
-
-scrollbar slider {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-  min-width: 6px;
-  min-height: 30px;
-}
-
-scrollbar slider:hover {
-  background-color: rgba(255, 255, 255, 0.25);
-}
-
-scrollbar trough {
-  background: transparent;
-  border: none;
-}
-
-.bucket-block {
-  margin-bottom: 12px;
+.active-column {
+  // Each column has a fixed width. Adjust this if you want wider/narrower columns.
+  min-width: 320px;
+  margin-right: 16px;
 }
 
 .bucket-label {
@@ -140,8 +103,8 @@ scrollbar trough {
 }
 
 .project-block {
-  margin-top: 4px;
-  margin-bottom: 6px;
+  margin-top: 6px;
+  margin-bottom: 10px;
   margin-left: 4px;
 }
 
@@ -151,30 +114,40 @@ scrollbar trough {
   transition: background-color 150ms ease;
 }
 
-.project-name-button:hover {
-  background-color: rgba(255, 255, 255, 0.06);
-}
-
-.project-name-button:active {
-  background-color: rgba(255, 255, 255, 0.10);
-}
+.project-name-button:hover  { background-color: rgba(255, 255, 255, 0.06); }
+.project-name-button:active { background-color: rgba(255, 255, 255, 0.10); }
 
 .project-name {
   font-size: 11px;
   font-weight: 600;
   color: #9090a0;
-  margin-top: 4px;
-  margin-bottom: 2px;
+}
+
+.project-ago {
+  font-size: 10px;
+  color: #6a6a78;
+  margin-left: 8px;
+}
+
+.next {
+  color: #e8e8ec;
+  font-size: 13px;
+  font-weight: 500;
+  margin-left: 4px;
+  margin-top: 2px;
+  margin-bottom: 4px;
+  padding: 2px 0;
+}
+
+.next-empty {
+  color: #6a6a72;
+  font-style: italic;
+  font-weight: 400;
 }
 
 .thread {
-  color: #d8d8e0;
-  font-size: 12px;
-  margin-left: 10px;
+  color: #a8a8b0;
+  font-size: 11px;
+  margin-left: 14px;
   padding: 1px 0;
 }
-
-.bucket-block:nth-child(2) .bucket-label { color: #d8e0d8; }
-.bucket-block:nth-child(3) .bucket-label { color: #c0c0c8; }
-.bucket-block:nth-child(4) .bucket-label { color: #98989c; }
-.bucket-block:nth-child(5) .bucket-label { color: #707074; }

@@ -12,6 +12,7 @@ JOURNAL_DIR="${HOME}/journals"
 
 EWW_BIN="${EWW_BIN:-$(command -v eww || echo "${HOME}/.local/bin/eww")}"
 COSMIC_RANDR_BIN="${COSMIC_RANDR_BIN:-$(command -v cosmic-randr || echo /usr/bin/cosmic-randr)}"
+INOTIFYWAIT_BIN="${INOTIFYWAIT_BIN:-$(command -v inotifywait || echo /usr/bin/inotifywait)}"
 
 say() { printf '\033[1;36m▶\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m!\033[0m %s\n' "$*" >&2; }
@@ -21,6 +22,7 @@ fail() { printf '\033[1;31m✗\033[0m %s\n' "$*" >&2; exit 1; }
 
 [ -x "$EWW_BIN" ] || fail "eww binary not found at $EWW_BIN. Set EWW_BIN env var or install eww first."
 [ -x "$COSMIC_RANDR_BIN" ] || warn "cosmic-randr not found. launch.sh expects it; edit the script for your compositor."
+[ -x "$INOTIFYWAIT_BIN" ] || fail "inotifywait not found. overlays will not update."
 command -v python3 >/dev/null || fail "python3 not found. Install python3."
 
 # ─── eww config and scripts ─────────────────────────────────────────────────
@@ -32,7 +34,7 @@ cp -v "$REPO_DIR/eww/eww.yuck" "$EWW_CONFIG_DIR/eww.yuck"
 cp -v "$REPO_DIR/eww/eww.scss" "$EWW_CONFIG_DIR/eww.scss"
 
 # Copy scripts and substitute paths
-for script in scan_journals.sh scan_active.py launch.sh; do
+for script in scan_journals.sh scan_active.py launch.sh listen_active.sh; do
   src="$REPO_DIR/eww/scripts/$script"
   dst="$EWW_CONFIG_DIR/scripts/$script"
   sed \

@@ -2,15 +2,23 @@
 ;; Data sources
 ;; ────────────────────────────────────────────────────────────────────────────
 
+;; Journals panel — polled every 30s. Age strings update on this cadence,
+;; which is plenty granular for "last touched" semantics.
 (defpoll journals
   :interval "30s"
   :initial "[]"
   `~/.config/eww/scripts/scan_journals.sh`)
 
+;; Active threads — event-driven via inotify. Updates immediately when any
+;; journal file changes; emits real data synchronously on startup so windows
+;; render correctly on first paint.
 (defpoll active
-  :interval "30s"
-  :initial `{"buckets":[]}`
+  :interval "1h"
+  :initial `{"columns":[],"width_px":"352px","height_px":"72px"}`
   `~/.config/eww/scripts/scan_active.py`)
+
+(deflisten active_refresh
+  `~/.config/eww/scripts/listen_active.sh`)
 
 ;; ────────────────────────────────────────────────────────────────────────────
 ;; Journal panel widgets
@@ -39,36 +47,51 @@
 ;; ────────────────────────────────────────────────────────────────────────────
 
 (defwidget thread-line [text]
-  (label :class "thread" :text {"- " + text} :xalign 0 :wrap true))
+  (label :class "thread" :text {"- " + text} :xalign 0 :wrap true :hexpand true))
 
-(defwidget project-block [name path threads]
-  (box :class "project-block" :orientation "v" :space-evenly false
-    (button :class "project-name-button"
-            :onclick {"xdg-open '" + path + "' &"}
-      (label :class "project-name" :text name :xalign 0))
-    (for t in threads
-      (thread-line :text t))))
+(defwidget project-header [name path ago]
+  (button :class "project-name-button"
+          :onclick {"xdg-open '" + path + "' &"}
+    (box :orientation "h" :space-evenly false
+      (label :class "project-name" :text name :xalign 0 :hexpand true)
+      (label :class "project-ago" :text ago :xalign 1))))
 
-(defwidget bucket-block [label projects]
-  (box :class "bucket-block" :orientation "v" :space-evenly false
-    (label :class "bucket-label" :text label :xalign 0)
-    (for project in projects
-      (project-block :name {project.name}
-                     :path {project.path}
-                     :threads {project.threads}))))
+(defwidget next-line [text]
+  (label :class {text == "" ? "next next-empty" : "next"}
+         :text {text == "" ? "(no next set)" : "▸ " + text}
+         :xalign 0
+         :wrap true
+         :hexpand true))
+
+(defwidget column-item [item]
+  (box :orientation "v" :space-evenly false
+    (label :class "bucket-label"
+           :text {item.type == "bucket" ? item.label : ""}
+           :xalign 0
+           :visible {item.type == "bucket"})
+    (box :class "project-block"
+         :orientation "v"
+         :space-evenly false
+         :visible {item.type == "project"}
+      (project-header :name {item.type == "project" ? item.name : ""}
+                      :path {item.type == "project" ? item.path : ""}
+                      :ago {item.type == "project" ? item.ago : ""})
+      (next-line :text {item.type == "project" ? item.next : ""})
+      (for t in {item.type == "project" ? item.threads : "[]"}
+        (thread-line :text t)))))
+
+(defwidget active-column [items]
+  (box :class "active-column" :orientation "v" :space-evenly false :valign "start"
+    (for item in items
+      (column-item :item item))))
 
 (defwidget active-panel []
-  (box :class "panel" :orientation "v" :space-evenly false
+  (box :class "panel active-panel" :orientation "v" :space-evenly false
+    (label :visible false :text active_refresh)
     (label :class "header" :text "ACTIVE" :xalign 0)
-    (scroll :class "scroll-area"
-            :hscroll false
-            :vscroll true
-            :height 400
-            :vexpand true
-      (box :orientation "v" :space-evenly false
-        (for bucket in {active.buckets}
-          (bucket-block :label {bucket.label}
-                        :projects {bucket.projects}))))))
+    (box :orientation "h" :space-evenly false :valign "start"
+      (for col in {active.columns}
+        (active-column :items col)))))
 
 ;; ────────────────────────────────────────────────────────────────────────────
 ;; Windows
@@ -85,12 +108,13 @@
   :focusable false
   (journal-panel))
 
-(defwindow active-window [monitor]
+(defwindow active-window [monitor active_width active_height]
   :monitor monitor
   :geometry (geometry :x "20px"
                       :y "20px"
-                      :width "360px"
-                      :anchor "bottom right")
+                      :width active_width
+                      :height active_height
+                      :anchor "top left")
   :stacking "bottom"
   :exclusive false
   :focusable false
