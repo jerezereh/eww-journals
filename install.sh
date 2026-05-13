@@ -9,6 +9,7 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 EWW_CONFIG_DIR="${HOME}/.config/eww"
 SYSTEMD_USER_DIR="${HOME}/.config/systemd/user"
 JOURNAL_DIR="${HOME}/journals"
+TEMPLATE_PATH="$REPO_DIR/templates/project-journal-template.md"
 
 EWW_BIN="${EWW_BIN:-$(command -v eww || echo "${HOME}/.local/bin/eww")}"
 COSMIC_RANDR_BIN="${COSMIC_RANDR_BIN:-$(command -v cosmic-randr || echo /usr/bin/cosmic-randr)}"
@@ -34,12 +35,13 @@ cp -v "$REPO_DIR/eww/eww.yuck" "$EWW_CONFIG_DIR/eww.yuck"
 cp -v "$REPO_DIR/eww/eww.scss" "$EWW_CONFIG_DIR/eww.scss"
 
 # Copy scripts and substitute paths
-for script in scan_journals.sh scan_active.py launch.sh listen_active.sh; do
+for script in scan_journals.sh scan_active.py launch.sh listen_active.sh create_journal.sh; do
   src="$REPO_DIR/eww/scripts/$script"
   dst="$EWW_CONFIG_DIR/scripts/$script"
   sed \
     -e "s|@@EWW_BIN@@|$EWW_BIN|g" \
     -e "s|@@COSMIC_RANDR_BIN@@|$COSMIC_RANDR_BIN|g" \
+    -e "s|@@TEMPLATE_PATH@@|$TEMPLATE_PATH|g" \
     -e "s|@@HOME@@|$HOME|g" \
     "$src" > "$dst"
   chmod +x "$dst"

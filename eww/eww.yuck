@@ -34,7 +34,11 @@
 
 (defwidget journal-panel []
   (box :class "panel" :orientation "v" :space-evenly false
-    (label :class "header" :text "JOURNALS" :xalign 0)
+    (box :class "panel-header" :orientation "h" :space-evenly false
+      (label :class "header" :text "JOURNALS" :xalign 0 :hexpand true)
+      (button :class "new-journal-button"
+              :onclick "~/.config/eww/scripts/create_journal.sh &"
+        (label :text "+" :xalign 0.5)))
     (for entry in journals
       (journal-row :name {entry.name}
                    :ago {entry.ago}
