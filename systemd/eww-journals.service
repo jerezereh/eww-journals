@@ -1,0 +1,15 @@
+[Unit]
+Description=eww journals and active panels
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=@@EWW_BIN@@ --config @@HOME@@/.config/eww daemon --no-daemonize
+ExecStartPost=@@HOME@@/.config/eww/scripts/launch.sh
+ExecStop=@@EWW_BIN@@ kill
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

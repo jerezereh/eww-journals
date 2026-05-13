@@ -1,0 +1,97 @@
+;; ────────────────────────────────────────────────────────────────────────────
+;; Data sources
+;; ────────────────────────────────────────────────────────────────────────────
+
+(defpoll journals
+  :interval "30s"
+  :initial "[]"
+  `~/.config/eww/scripts/scan_journals.sh`)
+
+(defpoll active
+  :interval "30s"
+  :initial `{"buckets":[]}`
+  `~/.config/eww/scripts/scan_active.py`)
+
+;; ────────────────────────────────────────────────────────────────────────────
+;; Journal panel widgets
+;; ────────────────────────────────────────────────────────────────────────────
+
+(defwidget journal-row [name ago status status_display path]
+  (button :class "row-button"
+          :onclick {"xdg-open '" + path + "' &"}
+    (box :class "row" :orientation "h" :space-evenly false
+      (label :class "name" :text name :xalign 0 :hexpand true)
+      (label :class {"status status-" + status} :text status_display)
+      (label :class "ago" :text ago :xalign 1))))
+
+(defwidget journal-panel []
+  (box :class "panel" :orientation "v" :space-evenly false
+    (label :class "header" :text "JOURNALS" :xalign 0)
+    (for entry in journals
+      (journal-row :name {entry.name}
+                   :ago {entry.ago}
+                   :status {entry.status}
+                   :status_display {entry.status_display}
+                   :path {entry.path}))))
+
+;; ────────────────────────────────────────────────────────────────────────────
+;; Active panel widgets
+;; ────────────────────────────────────────────────────────────────────────────
+
+(defwidget thread-line [text]
+  (label :class "thread" :text {"- " + text} :xalign 0 :wrap true))
+
+(defwidget project-block [name path threads]
+  (box :class "project-block" :orientation "v" :space-evenly false
+    (button :class "project-name-button"
+            :onclick {"xdg-open '" + path + "' &"}
+      (label :class "project-name" :text name :xalign 0))
+    (for t in threads
+      (thread-line :text t))))
+
+(defwidget bucket-block [label projects]
+  (box :class "bucket-block" :orientation "v" :space-evenly false
+    (label :class "bucket-label" :text label :xalign 0)
+    (for project in projects
+      (project-block :name {project.name}
+                     :path {project.path}
+                     :threads {project.threads}))))
+
+(defwidget active-panel []
+  (box :class "panel" :orientation "v" :space-evenly false
+    (label :class "header" :text "ACTIVE" :xalign 0)
+    (scroll :class "scroll-area"
+            :hscroll false
+            :vscroll true
+            :height 400
+            :vexpand true
+      (box :orientation "v" :space-evenly false
+        (for bucket in {active.buckets}
+          (bucket-block :label {bucket.label}
+                        :projects {bucket.projects}))))))
+
+;; ────────────────────────────────────────────────────────────────────────────
+;; Windows
+;; ────────────────────────────────────────────────────────────────────────────
+
+(defwindow journals-window [monitor]
+  :monitor monitor
+  :geometry (geometry :x "20px"
+                      :y "20px"
+                      :width "320px"
+                      :anchor "top right")
+  :stacking "bottom"
+  :exclusive false
+  :focusable false
+  (journal-panel))
+
+(defwindow active-window [monitor]
+  :monitor monitor
+  :geometry (geometry :x "20px"
+                      :y "20px"
+                      :width "360px"
+                      :anchor "bottom right")
+  :stacking "bottom"
+  :exclusive false
+  :focusable false
+  (active-panel))

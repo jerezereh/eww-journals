@@ -1,0 +1,8 @@
+# macOS / editor noise
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Local install artifacts
+*.local

@@ -1,0 +1,180 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Window transparency
+// ─────────────────────────────────────────────────────────────────────────────
+
+.background, window {
+  background-color: transparent;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Globals
+// ─────────────────────────────────────────────────────────────────────────────
+
+* {
+  font-family: "Inter", "Cantarell", sans-serif;
+  font-size: 13px;
+}
+
+button {
+  background: none;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Panel container
+// ─────────────────────────────────────────────────────────────────────────────
+
+.panel {
+  background-color: rgba(20, 20, 28, 0.85);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #e8e8ec;
+}
+
+.header {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #a0a0b0;
+  margin-bottom: 10px;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Journal rows
+// ─────────────────────────────────────────────────────────────────────────────
+
+.row-button {
+  border-radius: 6px;
+  padding: 2px 4px;
+  transition: background-color 150ms ease;
+}
+
+.row-button:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.row-button:active {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+
+.row {
+  padding: 4px 0;
+}
+
+.name {
+  color: #e8e8ec;
+  font-weight: 500;
+}
+
+.ago {
+  color: #7a7a88;
+  font-size: 11px;
+  margin-left: 12px;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Status badges
+// ─────────────────────────────────────────────────────────────────────────────
+
+.status {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0 8px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.status-active  { color: #7dd87d; background-color: rgba(125, 216, 125, 0.12); }
+.status-paused  { color: #d8b87d; background-color: rgba(216, 184, 125, 0.12); }
+.status-done    { color: #7d9fd8; background-color: rgba(125, 159, 216, 0.12); }
+.status-unknown { color: #888;    background-color: rgba(136, 136, 136, 0.12); }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Active panel
+// ─────────────────────────────────────────────────────────────────────────────
+
+.scroll-area {
+  min-height: 0;
+}
+
+scrollbar {
+  background: transparent;
+  border: none;
+}
+
+scrollbar slider {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  min-width: 6px;
+  min-height: 30px;
+}
+
+scrollbar slider:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+scrollbar trough {
+  background: transparent;
+  border: none;
+}
+
+.bucket-block {
+  margin-bottom: 12px;
+}
+
+.bucket-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #c0c0c8;
+  margin-top: 6px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 2px;
+}
+
+.project-block {
+  margin-top: 4px;
+  margin-bottom: 6px;
+  margin-left: 4px;
+}
+
+.project-name-button {
+  border-radius: 4px;
+  padding: 2px 4px;
+  transition: background-color 150ms ease;
+}
+
+.project-name-button:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.project-name-button:active {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+
+.project-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9090a0;
+  margin-top: 4px;
+  margin-bottom: 2px;
+}
+
+.thread {
+  color: #d8d8e0;
+  font-size: 12px;
+  margin-left: 10px;
+  padding: 1px 0;
+}
+
+.bucket-block:nth-child(2) .bucket-label { color: #d8e0d8; }
+.bucket-block:nth-child(3) .bucket-label { color: #c0c0c8; }
+.bucket-block:nth-child(4) .bucket-label { color: #98989c; }
+.bucket-block:nth-child(5) .bucket-label { color: #707074; }
