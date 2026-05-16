@@ -106,7 +106,7 @@
   :geometry (geometry :x "20px"
                       :y "20px"
                       :width "320px"
-                      :anchor "top right")
+                      :anchor "bottom right")
   :stacking "bottom"
   :exclusive false
   :focusable false

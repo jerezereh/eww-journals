@@ -109,6 +109,10 @@ Things that have been considered but deliberately left out:
 - **Resolve/drop prefixes for explicit thread closure.** The parser already
   supports `[resolved YYYY-MM-DD]` and `[dropped]` prefixes; add them to
   threads in your journals to opt into explicit closure tracking.
+- **Monitor-aware active columns.** The active panel currently uses one layout
+  across all monitors, which can overlap other panels on narrow or portrait
+  displays. A future version could read each monitor's width from `cosmic-randr`
+  and generate per-monitor active layouts with fewer columns on narrow screens.
 
 ## License
 
