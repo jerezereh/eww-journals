@@ -61,7 +61,7 @@ in `eww/eww.yuck` for each window definition.
 
 ## Project structure
 
-```
+```text
 eww-journals/
 ├── README.md                          # this file
 ├── install.sh                         # one-shot installer
@@ -93,7 +93,7 @@ but the project is moving. Threads in "OLDER" come from projects that have
 stalled, even if the threads themselves were recently written.
 
 **No automatic active list curation.** The active panel shows what each
-project's most recent entry declared as open. Automatic tracking of threads 
+project's most recent entry declared as open. Automatic tracking of threads
 requires heuristics and automated systems that defeat the purpose of journaling the current context.
 
 ## Future ideas

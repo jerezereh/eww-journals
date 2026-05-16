@@ -26,7 +26,7 @@
 
 (defwidget journal-row [name ago status status_display path]
   (button :class "row-button"
-          :onclick {"xdg-open '" + path + "' &"}
+          :onclick {"~/.config/eww/scripts/open_journal.sh '" + path + "' &"}
     (box :class "row" :orientation "h" :space-evenly false
       (label :class "name" :text name :xalign 0 :hexpand true)
       (label :class {"status status-" + status} :text status_display)
@@ -38,7 +38,7 @@
       (label :class "header" :text "JOURNALS" :xalign 0 :hexpand true)
       (button :class "new-journal-button"
               :onclick "~/.config/eww/scripts/create_journal.sh &"
-        (label :text "+" :xalign 0.5)))
+        (label :class "new-journal-plus" :text "+" :xalign 0.5 :yalign 0.5)))
     (for entry in journals
       (journal-row :name {entry.name}
                    :ago {entry.ago}
@@ -55,7 +55,7 @@
 
 (defwidget project-header [name path ago]
   (button :class "project-name-button"
-          :onclick {"xdg-open '" + path + "' &"}
+          :onclick {"~/.config/eww/scripts/open_journal.sh '" + path + "' &"}
     (box :orientation "h" :space-evenly false
       (label :class "project-name" :text name :xalign 0 :hexpand true)
       (label :class "project-ago" :text ago :xalign 1))))

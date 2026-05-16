@@ -35,7 +35,7 @@ cp -v "$REPO_DIR/eww/eww.yuck" "$EWW_CONFIG_DIR/eww.yuck"
 cp -v "$REPO_DIR/eww/eww.scss" "$EWW_CONFIG_DIR/eww.scss"
 
 # Copy scripts and substitute paths
-for script in scan_journals.sh scan_active.py launch.sh listen_active.sh create_journal.sh; do
+for script in scan_journals.sh scan_active.py launch.sh listen_active.sh create_journal.sh open_journal.sh; do
   src="$REPO_DIR/eww/scripts/$script"
   dst="$EWW_CONFIG_DIR/scripts/$script"
   sed \
