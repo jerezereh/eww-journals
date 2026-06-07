@@ -265,7 +265,7 @@ def main():
         json.dump({"columns": []}, sys.stdout)
         return
 
-    bucketed: dict[str, list[dict]] = {}
+    bucketed: dict[str, list[tuple[date, dict]]] = {}
 
     for path in sorted(JOURNAL_DIR.rglob("*.md")):
         if path.name in EXCLUDE:
@@ -277,14 +277,14 @@ def main():
         if not threads and not next_text:
             continue
         bucket = bucket_for(entry_date, today)
-        bucketed.setdefault(bucket, []).append({
+        bucketed.setdefault(bucket, []).append((entry_date, {
             "type": "project",
             "name": path.stem,
             "path": str(path),
             "ago": ago_label(entry_date, today),
             "next": next_text,
             "threads": threads,
-        })
+        }))
 
     # Flatten into ordered sequence of bucket labels + projects
     bucket_order = ["TODAY", "THIS WEEK", "THIS MONTH", "OLDER"]
@@ -294,7 +294,7 @@ def main():
         if label not in bucketed:
             continue
         flat.append({"type": "bucket", "label": label})
-        for proj in sorted(bucketed[label], key=lambda p: p["name"]):
+        for _, proj in sorted(bucketed[label], key=lambda item: item[0], reverse=True):
             flat.append(proj)
             project_count += 1
 
